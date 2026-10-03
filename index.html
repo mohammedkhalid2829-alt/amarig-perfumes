@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أماريج للعطور - تركيبات فاخرة</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .gold-gradient { background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); }
+        .gold-text { background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-24">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-amber-500/30 sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-full gold-gradient flex items-center justify-center text-slate-950 font-black text-xl shadow">ع</div>
+                <div>
+                    <h1 class="text-2xl font-black gold-text">أماريج للعطور</h1>
+                    <p class="text-xs text-slate-400">فخامة التركيبات الأصلية والثبات العالي</p>
+                </div>
+            </div>
+            <div>
+                <span class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 shadow-sm">متجر رسمي</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full space-y-8">
+        
+        <!-- Hero Banner -->
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-500/20 p-8 md:p-12 text-center shadow-2xl">
+            <div class="max-w-2xl mx-auto space-y-4">
+                <span class="px-4 py-1.5 rounded-full text-xs font-bold gold-gradient text-slate-950 inline-block shadow">عطور تركيب بجودة عالمية</span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white">اكتشف عطر إحساسك المميز مع <span class="gold-text">أماريج</span></h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">اختر عطرك المفضل واختَر حجم العبوة المناسب لك (30مل، 50مل، أو 100مل) بسعر موحد وثابت، وأضفه للسلة أو اطلبه فوراً!</p>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="max-w-xl mx-auto w-full">
+            <div class="relative">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث عن عطرك المفضّل..." class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-3 pr-12 text-white placeholder-slate-400 focus:outline-none focus:border-amber-500 transition shadow-inner text-sm">
+                <div class="absolute right-4 top-3.5 text-amber-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap justify-center gap-2" id="filterContainer">
+            <button onclick="filterPerfumes('الكل')" class="filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-amber-500 text-slate-950 transition shadow">الكل</button>
+            <button onclick="filterPerfumes('صيفي')" class="filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">صيفي ومنعش</button>
+            <button onclick="filterPerfumes('شتوي')" class="filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">شتوي ودافيء</button>
+            <button onclick="filterPerfumes('مناسبات')" class="filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">مناسبات وسهرات</button>
+        </div>
+
+        <!-- Perfumes Grid -->
+        <div id="perfumesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- سيتم تحميل العطور هنا تلقائياً -->
+        </div>
+    </main>
+
+    <!-- Shopping Cart Floating Bar -->
+    <div id="cartBar" class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur border-t border-amber-500/30 p-4 shadow-2xl z-50 transform translate-y-full transition-transform duration-300">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center text-slate-950 font-black shadow">
+                    <span id="cartCount">0</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white text-sm">سلة المشتريات الخاصة بك</h4>
+                    <p class="text-xs text-slate-400">الإجمالي: <span id="cartTotalPrice" class="gold-text font-bold">0 ج.س</span></p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <button onclick="toggleCartModal()" class="flex-1 md:flex-none px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 transition">عرض السلة</button>
+                <button onclick="checkoutWhatsApp()" class="flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow flex items-center justify-center space-x-1 space-x-reverse">
+                    <span>إتمام الطلب عبر الواتساب</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-amber-500/30 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <h3 class="text-xl font-bold text-white flex items-center space-x-2 space-x-reverse">
+                    <span>🛒 تفاصيل سلة المشتريات</span>
+                </h3>
+                <button onclick="toggleCartModal()" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+            </div>
+            <div id="cartItemsList" class="max-h-60 overflow-y-auto space-y-3 divide-y divide-slate-800">
+                <!-- Cart items -->
+            </div>
+            <div class="border-t border-slate-800 pt-4 flex justify-between items-center">
+                <span class="text-slate-400 text-sm">الإجمالي الكلي:</span>
+                <span id="modalTotalPrice" class="text-xl font-black gold-text">0 ج.س</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="toggleCartModal()" class="py-3 rounded-xl text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">إغلاق</button>
+                <button onclick="checkoutWhatsApp()" class="py-3 rounded-xl text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow">إتمام الطلب الآن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-slate-400 text-sm">
+        <p>جميع الحقوق محفوظة © أماريج للعطور 2026</p>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        // الأسعار الموحدة
+        const prices = {
+            30: 7000,
+            50: 14000,
+            100: 21000
+        };
+
+        const whatsappNumber = "249912209922"; 
+
+        // قائمة العطور الكاملة والمدمجة
+        const perfumes = [
+            { id: 1, name: "اسكادا", category: "صيفي", image: "https://shop.kellyandcoo.store/products/escada-sexy-30ml", desc: "عطر فواكه وزهور منعش ومبهج، يعبر عن البهجة والحيوية بطابع استوائي جذاب." },
+            { id: 2, name: "فيزاتشي", category: "صيفي", image: "https://www.faces.sa/ar/p/versace-pour-homme-eau-de-toilette-033310028073.html", desc: "عطر أروماتي منعش يجمع بين نفحات الحمضيات والأعشاب الإيطالية لأناقة يومية." },
+            { id: 3, name: "صبايا", category: "صيفي", image: "https://tops-quality.com/product/%D8%B9%D8%B7%D8%B1-%D8%B5%D8%A8%D8%A7%D9%8A%D8%A7/", desc: "عطر شرقي زهري ناعم وأنثوي، يتميز برائحة الورد والمسك المنعش." },
+            { id: 4, name: "دارج", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.19688.2x.avif", desc: "عطر شرقي حار ودافئ للرجال، يمزج بين الهيل، القرفة، والفانيليا لجاذبية عالية." },
+            { id: 5, name: "احساس", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.127555.2x.avif", desc: "عطر شرقي زهري راقٍ يمنح شعوراً بالدفء والتميز في كل الأوقات." },
+            { id: 6, name: "جواد الليل", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.42025.2x.avif", desc: "عطر شرقي خشبي قوي وغني بالعود والتوابل، يمنح حضوراً ملكياً ثابتاً." },
+            { id: 7, name: "فاسيو", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.22140.2x.avif", desc: "عطر منعش وحيوي يناسب الاستخدام اليومي بنفحات نظيفة وعطرية." },
+            { id: 8, name: "تراهب الدهب", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.101906.2x.avif", desc: "عطر شرقي ملكي فاخر يدمج بين العود والزعفران والعنبر." },
+            { id: 9, name: "عود مود", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.46814.2x.avif", desc: "عطر شرقي دافئ وغني بالعود والروائح الدخانية الحلوة، فائق الثبات." },
+            { id: 10, name: "سوفاج", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.31861.2x.avif", desc: "عطر منعش وجريء يجمع بين انتعاش البرغموت ودفء الأخشاب والفلفل." },
+            { id: 11, name: "جادور", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.5.2x.avif", desc: "عطر أنثوي فاخر يضم باقة زهرية متألقة من الياسمين والورد واليلانغ يلانغ." },
+            { id: 12, name: "شيخ الشيوخ", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.99143.2x.avif", desc: "عطر شرقي عريق يمزج بين الأخشاب الثمينة والبهارات والعنبر." },
+            { id: 13, name: "فانيليا", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.26262.2x.avif", desc: "عطر دافئ وحلو يعتمد على خلاصة الفانيليا الصافية واللمحات المسكية." },
+            { id: 14, name: "ريد تباكو", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.46663.2x.avif", desc: "عطر قوي وفاخر يجمع بين التبغ الدافئ، القرفة، والأخشاب الشرقية الثقيلة." },
+            { id: 15, name: "جستتي", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.8633.2x.avif", desc: "عطر جريء وأنيق يجمع بين النفحات الفاكهية والزهرية الجذابة." },
+            { id: 16, name: "ايموشن", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.8681.2x.avif", desc: "عطر منعش ومبهج يناسب الأيام اليومية بنسمات زهرية وفواكه رقيقة." },
+            { id: 17, name: "كريد افينتوس", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.9828.2x.avif", desc: "عطر الأناقة والنجاح الأسطوري، يمزج بين الأناناس والبتولا والأخشاب الفاخرة." },
+            { id: 18, name: "وشوشه", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.25893.2x.avif", desc: "عطر شرقي حلو ومرح يجمع بين الفواكه والمسك والفانيليا الناعمة." },
+            { id: 19, name: "شالص", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.20850.2x.avif", desc: "عطر دافئ ومنعش يمنح إحساساً بالحيوية والجاذبية طوال اليوم." },
+            { id: 20, name: "العزيزة", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.130685.2x.avif", desc: "عطر شرقي أصيل يتميز بتركيبة فخمة من الورود والمسك والأخشاب العطرية." },
+            { id: 21, name: "بلاك اوبيوم", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.60586.2x.avif", desc: "عطر ساحر وغامض يجمع بين القهوة السوداء والفانيليا والأزهار البيضاء." },
+            { id: 22, name: "شمس الامارات", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.67612.2x.avif", desc: "عطر شرقي دافئ يجمع بين الفواكه، التوابل، والعنبر الفاخر." },
+            { id: 23, name: "بولوسبورت", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.894.2x.avif", desc: "عطر رياضي منعش يجمع بين النعناع واللافندر والأعشاب البحرية." },
+            { id: 24, name: "بليجر", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.56861.2x.avif", desc: "عطر زهري منعش ونظيف يحيطك بباقة من الزهور الربيعية الرقيقة." },
+            { id: 25, name: "لادور بخور", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.96079.2x.avif", desc: "عطر بخوري شرقي أصيل يعبق برائحة البخور الراقي والأخشاب." },
+            { id: 26, name: "اسكيب", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.48443.2x.avif", desc: "عطر مائي فواكه منعش يمنح إحساساً بالانطلاق والحرية المطلقة." },
+            { id: 27, name: "اولمبيا", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.72556.2x.avif", desc: "عطر أنثوي شرقي مالح ودافئ يجمع بين الفانيليا المالحة والياسمين." },
+            { id: 28, name: "رومبا", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.401.2x.avif", desc: "عطر كلاسيكي جريء وغني بالنفحات الفاكهية والخشبية الدافئة." },
+            { id: 29, name: "لاكوست سبورت", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.8158.2x.avif", desc: "عطر رياضي أنيق يمزج بين الحمضيات المنعشة والروائح الخشبية الخفيفة." },
+            { id: 30, name: "باريس", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.102874.2x.avif", desc: "عطر رومانسي كلاسيكي يتربع على عرش عطور الورد الفرنسي الفاخر." },
+            { id: 31, name: "فنتازيا", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.4249.2x.avif", desc: "عطر شبابي حلو ومحبوب يجمع بين الكيوي والكب كيك والشوكولاتة البيضاء." },
+            { id: 32, name: "نارسيس", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.114418.2x.avif", desc: "عطر أنثوي غامض وجذاب يعتمد على المسك النقي والأزهار المخملية." },
+            { id: 33, name: "لابيدوس", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.5943.2x.avif", desc: "عطر كلاسيكي شرقي قوي يبرز بطابعه الخشبي الحار والفوحان العالي." },
+            { id: 34, name: "اتيرنتي", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.56669.2x.avif", desc: "عطر كلاسيكي منعش يجمع بين اللافندر والأعشاب الخضراء والأخشاب النظيفة." },
+            { id: 35, name: "بروت", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.15303.2x.avif", desc: "عطر رجالي كلاسيكي عريق يتميز بطابع فوجير خشبي أروماتي مميز." },
+            { id: 36, name: "فوياج", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.70562.2x.avif", desc: "عطر مائي خشبي منعش يمنح إحساس نسيم البحر والأوراق الخضراء." },
+            { id: 37, name: "ويك إند", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.999.2x.avif", desc: "عطر مبهج يجمع بين الحمضيات ونفحات الفواكه والزهور المريحة." },
+            { id: 38, name: "إيدن", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.105534.2x.avif", desc: "عطر شرقي زهري غامض ومنعش يجمع بين الروائح المائية والخضراء." },
+            { id: 39, name: "كابوتين", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.1061.2x.avif", desc: "عطر زهري منعش وحيوي يضفي طابعاً من البهجة والأناقة." },
+            { id: 40, name: "توسكا", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.5796.2x.avif", desc: "عطر كلاسيكي عتيق يمزج بين الألدهيدات والأزهار الغنية." },
+            { id: 41, name: "سي كي ون", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.95956.2x.avif", desc: "عطر منعش للجنسين يجمع بين الحمضيات والشاي الأخضر والأخشاب الخفيفة." },
+            { id: 42, name: "جافنشي", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.51488.2x.avif", desc: "عطر فاخر يجسد الأناقة والجاذبية بتوليفة زهرية شرقية راقية." },
+            { id: 43, name: "جوب", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.10986.2x.avif", desc: "عطر شرقي جريء وحلو يمزج بين القرفة والزهور والفانيليا لثبات قوي." },
+            { id: 44, name: "فندي", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.202.2x.avif", desc: "عطر أنيق وراقي يجمع بين النفحات الخشبية والأزهار الفاخرة." },
+            { id: 45, name: "الوسام", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.19650.2x.avif", desc: "عطر رجالي فاخر يمنح انتعاشاً معدنياً وزهرياً شبيهاً بالعطور الملكية." },
+            { id: 46, name: "هيبنوتيك", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.219.2x.avif", desc: "عطر ساحر ومغري يعتمد على اللوز المر والفانيليا والياسمين." },
+            { id: 47, name: "اسكاندل", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.60888.2x.avif", desc: "عطر جريء ومثير يتميز بعبق العسل والغاردينيا والباتشولي." },
+            { id: 48, name: "دلع بنات", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.54865.2x.avif", desc: "عطر بناتي حلو ومنعش يمزج بين الفواكه والسكر برائحة مبهجة." },
+            { id: 49, name: "اوبن", category: "شتوي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.5973.2x.avif", desc: "عطر رجالي كلاسيكي قوي يرتكز على الأخشاب العطرية والتوابل الحادة." },
+            { id: 50, name: "لاكوست بلاك", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.93832.2x.avif", desc: "عطر أروماتي خشبي داكن يجمع بين البطيخ واللافندر والباتشولي." },
+            { id: 51, name: "كول ووتر", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.66525.2x.avif", desc: "عطر الأيقونة الانتعاشية المائية الشهيرة للرجال، منعش ونظيف." },
+            { id: 52, name: "لاكوست وايت", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.11043.2x.avif", desc: "عطر أنيق ونظيف يمزج بين الجريب فروت وأوراق الأرز والعنبر." },
+            { id: 53, name: "دنهل فرش", category: "صيفي", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.1940.2x.avif", desc: "عطر منعش وعشبي يجمع بين النعناع والمياه والأخشاب الخفيفة." },
+            { id: 54, name: "جي بفرلي", category: "مناسبات", image: "https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.91043.2x.avif", desc: "عطر زهري كلاسيكي فخم وغني بالورود البيضاء والياسمين." },
+            
+            { id: 55, name: "بلو دي شانيل", category: "صيفي", image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80", desc: "عطر خشبي أروماتي للرجال يجمع بين انتعاش الحمضيات ودفء الأخشاب والنعناع، مناسب للاستخدام اليومي." },
+            { id: 56, name: "بلاك ليكزس", category: "شتوي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3_Ki-AbgCjLv0O4Ar5V-WyJKlKOna8lO2b0iE94t7Wg&s", desc: "عطر جريء ومثيـر بلمحات شرقية خشبية وتوابل دافئة تمنح حضوراً قوياً وجذاباً طوال الليلة." },
+            { id: 57, name: "بكرات روج", category: "مناسبات", image: "https://orisdi.com/cdn/shop/products/Untitleddesign-2022-07-20T164432.759_800x.jpg?v=1658324684", desc: "عطر شرقي زهري فاخر للجنسين يتميز بنفحات العنبر والياسمين وخشب الأرز، فائق الثبات والأناقة الملكية." },
+            { id: 58, name: "دنهل ديزاير", category: "شتوي", image: "https://kaneen.com/media/catalog/product//D/u/Dunhill_Desire_Red_For_Men_Perfume_by_Dunhill_Eau_de_Toilette_For_Men_150_ml-35c2d006.webp", desc: "عطر كلاسيكي شرقي خشبي يمزج بين التفاح والفانيليا والمسك، جذاب ومفضل للأوقات المسائية." },
+            { id: 59, name: "رويال بلو", category: "صيفي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJBb4W2pJnY9MtvI7Gj4HCvih7dqNLc0a-QzeEKMLULv4J2s7rxWsjdiQ&s=10", desc: "عطر ملكي منعش ونظيف يجمع بين نفحات البحر والأعشاب العطرية الفاخرة، مثالي للأيام الحارة." },
+            { id: 60, name: "انا الابيض", category: "صيفي", image: "https://cdn.salla.sa/BvVyR/93d25920-d3c3-4afc-8557-f413c0b2b15d-1000x1000-csjM3xW39QddPnX4j1gADqyVxw9MqV8lfBVRCUmO.jpg", desc: "عطر شرقي نقي وناعم يغلب عليه المسك الأبيض والفانيليا مع لمحات زهرية خفيفة ومنعشة." },
+            { id: 61, name: "نجدية", category: "صيفي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYxkiATMfbrwsjYwYFnTadNM_1vPYnNwmi7dYMrIq-jgeHkIw-qMhu8z09&s=10", desc: "عطر شرقي خشبي حماسي ومنعش يمزج بين التوابل، الحمضيات، والعنبر الفاخر للاستخدام اليومي." },
+            { id: 62, name: "خمرة", category: "شتوي", image: "https://cdn.salla.sa/Bnxgq/22244068-2b0f-4088-8c5d-e1678a913ee8-1000x1000-T9E0faSwLmXzLoBWOVSAohnRQb9oviGapb3Sw2VP.jpg", desc: "عطر شرقي دافئ وغني بالتوابل والفانيليا والقرفة والتمر، يتميز بحلاوة راقية وثبات عالٍ جداً." },
+            { id: 63, name: "سكرت مان", category: "مناسبات", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMrQIYgGJacn0dyhh8XkvjkS2dGSLSjp6bEOODxo2kkoW7R8HdaBe3Ts1O&s=10", desc: "عطر رجالي غامض وجذاب يجمع بين الأخشاب العطرية والتوابل الحارة ليعطي إحساساً بالثقة والتألق." },
+            { id: 64, name: "توم فورد", category: "مناسبات", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDpaJDMiqLPTy1LnmtwH7wDmw3hVB4KSdpD7HMKKsCwm3r7_KxmsJtlTY&s=10", desc: "عطر فاخر وغني يتميز بتركيزه العالي وغموضه الجذاب المعتمد على الأخشاب والتوابل الشرقية النادرة." },
+            { id: 65, name: "انفيكتوس", category: "صيفي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsofEqxEhHG7C6SIbfiD-qqs8kcFhoOTHWxYMX6UvK-A&s=10", desc: "عطر النصر والقوة يجمع بين انتعاش الجريب فروت وأوراق الغار ودفء العنبر الخشبي للحركة والنشاط." },
+            { id: 66, name: "اسبلانديد", category: "مناسبات", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbJmnTqDAy3R3Ubr586uW7A-mbkKtBjzpMLo9j-6u8rQ&s=10", desc: "عطر راقٍ وأنيق يتميز بتوليفة زهرية خشبية تناسب الأذواق الرفيعة في العمل والمناسبات." },
+            { id: 67, name: "هوجو بوس", category: "صيفي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcmfIMqj5jqovGw5uOWkz1Y2-UCq0-IzVxLVIbGpe-NtTTaptp5CJPdRk&s=10", desc: "عطر الكلاسيكية العصرية يمزج بين التفاح الأخضر والأخشاب الذكورية النظيفة للمقابلات والعمل." },
+            { id: 68, name: "نايت فلايت", category: "مناسبات", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoUkij9ds1MqiAzO9ioqDL5iDOUhfXaeCdzZ0_mrzQ8paR-bLBRLFDanIo&s=10", desc: "عطر ليلي منعش ومميز يجمع بين الحمضيات ونفحات الفواكه والأخشاب الدافئة، مثالي للسهرات." },
+            { id: 69, name: "هيرش لهب", category: "شتوي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz1k-0QMO2LtL7Y_S24-KCVQRgC339kNlsbuRqaEI-PTmM-tYh64ehzN8&s=10", desc: "عطر شرقي حارق ودافئ يتميز بعبق التوابل الشرقية والعنبر القوي الذي يترك بصمة لا تنسى." },
+            { id: 70, name: "وايلد كولت", category: "صيفي", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiqiRz7pWwSnv5MT0n2meKQZBB_Pi3w2TMtz8T_K-GsM9lJ3Ttxr7SIPnf&s=10", desc: "عطر جريء وحيوي يعبر عن الانطلاق والحرية بتوليفة منعشة من التوابل والأخشاب البرية." }
+        ];
+
+        let currentCategory = 'الكل';
+        let searchQuery = '';
+        let cart = [];
+
+        // عرض العطور
+        function renderStore(filter = 'الكل', search = '') {
+            const grid = document.getElementById('perfumesGrid');
+            grid.innerHTML = '';
+            
+            let filtered = perfumes;
+            if (filter !== 'الكل') {
+                filtered = filtered.filter(p => p.category === filter);
+            }
+            if (search !== '') {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search));
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">لا توجد عطور مطابقة للبحث أو القسم الحالي.</div>`;
+                return;
+            }
+
+            filtered.forEach(perfume => {
+                if (!perfume.selectedSize) {
+                    perfume.selectedSize = 30;
+                    perfume.selectedPrice = prices[30];
+                }
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden flex flex-col justify-between hover:border-amber-500/50 transition shadow-xl";
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 overflow-hidden relative bg-slate-950">
+                            <img src="${perfume.image}" alt="${perfume.name}" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80'">
+                            <div class="absolute top-3 right-3">
+                                <span class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-900/85 backdrop-blur text-amber-400 border border-amber-500/30">${perfume.category}</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">${perfume.name}</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-6">${perfume.desc}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 pt-0 space-y-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-2 font-medium">اختر حجم العبوة:</label>
+                            <div class="grid grid-cols-3 gap-2" id="sizes-${perfume.id}">
+                                <button onclick="selectSize(${perfume.id}, 30, ${prices[30]})" id="btn-${perfume.id}-30" class="size-btn-${perfume.id} py-2 rounded-xl text-xs font-bold ${perfume.selectedSize === 30 ? 'bg-amber-500 text-slate-950 border border-amber-500' : 'bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700'} transition">30 مل</button>
+                                <button onclick="selectSize(${perfume.id}, 50, ${prices[50]})" id="btn-${perfume.id}-50" class="size-btn-${perfume.id} py-2 rounded-xl text-xs font-bold ${perfume.selectedSize === 50 ? 'bg-amber-500 text-slate-950 border border-amber-500' : 'bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700'} transition">50 مل</button>
+                                <button onclick="selectSize(${perfume.id}, 100, ${prices[100]})" id="btn-${perfume.id}-100" class="size-btn-${perfume.id} py-2 rounded-xl text-xs font-bold ${perfume.selectedSize === 100 ? 'bg-amber-500 text-slate-950 border border-amber-500' : 'bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700'} transition">100 مل</button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-950 px-4 py-3 rounded-2xl border border-slate-800">
+                            <span class="text-xs text-slate-400">السعر الإجمالي:</span>
+                            <span id="price-display-${perfume.id}" class="text-lg font-black gold-text">${perfume.selectedPrice.toLocaleString()} ج.س</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="addToCart(${perfume.id})" class="flex items-center justify-center space-x-1 space-x-reverse py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow">
+                                <span>أضف للسلة</span>
+                            </button>
+                            <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('السلام عليكم، أريد طلب عطر: ' + perfume.name + ' بحجم ' + perfume.selectedSize + ' مل بسعر ' + perfume.selectedPrice + ' جنيه.')}" target="_blank" id="wa-btn-${perfume.id}" class="flex items-center justify-center space-x-1 space-x-reverse py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow">
+                                <span>طلب واتساب</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // اختيار الحجم
+        window.selectSize = function(perfumeId, size, price) {
+            const buttons = document.querySelectorAll(`.size-btn-${perfumeId}`);
+            buttons.forEach(btn => {
+                btn.className = `size-btn-${perfumeId} py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700 transition hover:bg-slate-700`;
+            });
+            
+            const activeBtn = document.getElementById(`btn-${perfumeId}-${size}`);
+            if (activeBtn) {
+                activeBtn.className = `size-btn-${perfumeId} py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 border border-amber-500 transition`;
+            }
+
+            document.getElementById(`price-display-${perfumeId}`).innerText = price.toLocaleString() + " ج.س";
+            
+            const perfume = perfumes.find(p => p.id === perfumeId);
+            if (perfume) {
+                perfume.selectedSize = size;
+                perfume.selectedPrice = price;
+                
+                const waBtn = document.getElementById(`wa-btn-${perfumeId}`);
+                if (waBtn) {
+                    waBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('السلام عليكم، أريد طلب عطر: ' + perfume.name + ' بحجم ' + size + ' مل بسعر ' + price.toLocaleString() + ' جنيه.')}`;
+                }
+            }
+        }
+
+        // البحث الفوري
+        window.handleSearch = function() {
+            searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+            renderStore(currentCategory, searchQuery);
+        }
+
+        // فلترة الأقسام
+        window.filterPerfumes = function(category) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = btn.innerText.includes(category) || (category === 'الكل' && btn.innerText === 'الكل') 
+                    ? "filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-amber-500 text-slate-950 transition shadow" 
+                    : "filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+            });
+            renderStore(currentCategory, searchQuery);
+        }
+
+        // إضافة للسلة
+        window.addToCart = function(perfumeId) {
+            const perfume = perfumes.find(p => p.id === perfumeId);
+            const size = perfume.selectedSize || 30;
+            const price = perfume.selectedPrice || prices[30];
+
+            const existingItem = cart.find(item => item.id === perfumeId && item.size === size);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: perfume.id,
+                    name: perfume.name,
+                    size: size,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            updateCart();
+        }
+
+        // تحديث السلة
+        window.updateCart = function() {
+            const cartCount = document.getElementById('cartCount');
+            const cartTotalPrice = document.getElementById('cartTotalPrice');
+            const modalTotalPrice = document.getElementById('modalTotalPrice');
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartBar = document.getElementById('cartBar');
+
+            let totalCount = 0;
+            let totalPrice = 0;
+
+            cartItemsList.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsList.innerHTML = `<p class="text-center text-slate-400 py-4 text-sm">سلة المشتريات فارغة</p>`;
+                cartBar.classList.add('translate-y-full');
+            } else {
+                cartBar.classList.remove('translate-y-full');
+                cart.forEach((item, index) => {
+                    totalCount += item.quantity;
+                    totalPrice += item.price * item.quantity;
+
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center py-2";
+                    div.innerHTML = `
+                        <div>
+                            <h5 class="font-bold text-white text-sm">${item.name} (${item.size} مل)</h5>
+                            <p class="text-xs text-slate-400">${item.price.toLocaleString()} ج.س × ${item.quantity}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="gold-text font-bold text-sm">${(item.price * item.quantity).toLocaleString()} ج.س</span>
+                            <button onclick="removeFromCart(${index})" class="text-rose-500 hover:text-rose-400 text-xs px-2 py-1 bg-rose-500/10 rounded-lg">حذف</button>
+                        </div>
+                    `;
+                    cartItemsList.appendChild(div);
+                });
+            }
+
+            cartCount.innerText = totalCount;
+            cartTotalPrice.innerText = totalPrice.toLocaleString() + " ج.س";
+            modalTotalPrice.innerText = totalPrice.toLocaleString() + " ج.س";
+        }
+
+        // حذف عنصر من السلة
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        // فتح/إغلاق نافذة السلة
+        window.toggleCartModal = function() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // إتمام الطلب عبر الواتساب
+        window.checkoutWhatsApp = function() {
+            if (cart.length === 0) {
+                alert('سلة المشتريات فارغة!');
+                return;
+            }
+
+            let message = "السلام عليكم، أريد طلب المنتجات التالية من أماريج للعطور:%0A";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                let itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `${index + 1}. *${item.name}* - الحجم: ${item.size} مل - الكمية: ${item.quantity} - السعر: ${itemTotal.toLocaleString()} جنيه%0A`;
+            });
+
+            message += `%0A*الإجمالي الكلي: ${total.toLocaleString()} جنيه*`;
+
+            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+        }
+
+        // تشغيل المتجر عند التحميل
+        renderStore();
+    </script>
+</body>
+</html>
